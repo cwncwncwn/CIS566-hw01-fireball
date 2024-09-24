@@ -1,73 +1,89 @@
-# [Project 1: Noise](https://github.com/CIS-566-Fall-2022/hw01-fireball-base)
+# HW 0: Intro to Javascript and WebGL
+
+<p align="center">
+  <img width="360" height="360" src="https://user-images.githubusercontent.com/1758825/132532354-e3a45402-e484-499e-bfa7-2d73b9f2c946.png">
+</p>
+<p align="center">(source: Ken Perlin)</p>
+
+## Live Demo
+ - Also available at [Live demo on webpage](https://cwncwncwn.github.io/CIS566-hw00-intro-base/)
+
+ ![](/live_demo.gif)
+
+## Project Features
+- Custom shaders with the use of 3D noise functions and time curve.
+    - Vertex Shader: causing the deformation of the object.
+    - Fragment Shader: controlling fragment color of the object. 
+- GUI
+    - Color palatte to adjust the base color of the object.
 
 ## Objective
+- Check that the tools and build configuration we will be using for the class works.
+- Start learning Typescript and WebGL2
+- Practice implementing noise
 
-Get comfortable with using WebGL and its shaders to generate an interesting 3D, continuous surface using a multi-octave noise algorithm.
+## Forking the Code
+Rather than cloning the homework repository, please __fork__ the code into your own repository using the `Fork` button in the upper-right hand corner of the Github UI. This will enable you to have your own personal repository copy of the code, and let you make a live demo (described later in this document).
 
-## Getting Started
+## Running the Code
 
-1. Fork and clone [this repository](https://github.com/CIS700-Procedural-Graphics/Project1-Noise).
+1. [Install Node.js](https://nodejs.org/en/download/). Node.js is a JavaScript runtime. It basically allows you to run JavaScript when not in a browser. For our purposes, this is not necessary. The important part is that with it comes `npm`, the Node Package Manager. This allows us to easily declare and install external dependencies such as [dat.GUI](https://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage), and [glMatrix](http://glmatrix.net/).
 
-2. Copy your hw0 code into your local hw1 repository.
+2. Using a command terminal, run `npm install` in the root directory of your project. This will download all of those dependencies.
 
-3. In the root directory of your project, run `npm install`. This will download all of those dependencies.
+3. Do either of the following (but we highly recommend the first one for reasons we will explain later).
 
-4. Do either of the following (but I highly recommend the first one for reasons I will explain later).
+    a. Run `npm start` and then go to `localhost:5660` in your web browser
 
-    a. Run `npm start` and then go to `localhost:7000` in your web browser
+    b. Run `npm run build` and then go open `dist/index.html` in your web browser
 
-    b. Run `npm run build` and then go open `index.html` in your web browser
-
-    You should hopefully see the framework code with a 3D cube at the center of the screen!
-
+## Module Bundling
+One of the most important dependencies of our projects is [Webpack](https://webpack.js.org/concepts/). Webpack is a module bundler which allows us to write code in separate files and use `import`s and `export`s to load classes and functions for other files. It also allows us to preprocess code before compiling to a single file. We will be using [Typescript](https://www.typescriptlang.org/docs/home.html) for this course which is Javascript augmented with type annotations. Webpack will convert Typescript files to Javascript files on compilation and in doing so will also check for proper type-safety and usage. Read more about Javascript modules in the resources section below.
 
 ## Developing Your Code
-All of the JavaScript code is living inside the `src` directory. The main file that gets executed when you load the page as you may have guessed is `main.js`. Here, you can make any changes you want, import functions from other files, etc. The reason that I highly suggest you build your project with `npm start` is that doing so will start a process that watches for any changes you make to your code. If it detects anything, it'll automagically rebuild your project and then refresh your browser window for you. Wow. That's cool. If you do it the other way, you'll need to run `npm build` and then refresh your page every time you want to test something.
+All of the JavaScript code is living inside the `src` directory. The main file that gets executed when you load the page as you may have guessed is `main.ts`. Here, you can make any changes you want, import functions from other files, etc. The reason that we highly suggest you build your project with `npm start` is that doing so will start a process that watches for any changes you make to your code. If it detects anything, it'll automagically rebuild your project and then refresh your browser window for you. Wow. That's cool. If you do it the other way, you'll need to run `npm build` and then refresh your page every time you want to test something.
 
-## Publishing Your Code
-We highly suggest that you put your code on GitHub. One of the reasons we chose to make this course using JavaScript is that the Web is highly accessible and making your awesome work public and visible can be a huge benefit when you're looking to score a job or internship. To aid you in this process, running `npm run deploy` will automatically build your project and push it to `gh-pages` where it will be visible at `username.github.io/repo-name`.
+We would suggest editing your project with Visual Studio Code https://code.visualstudio.com/. Microsoft develops it and Microsoft also develops Typescript so all of the features work nicely together. Sublime Text and installing the Typescript plugins should probably work as well.
 
-## Setting up `main.ts`
+## Assignment Details
+1. Take some time to go through the existing codebase so you can get an understanding of syntax and how the code is architected. Much of the code is designed to mirror the class structures used in CIS 460's OpenGL assignments, so it should hopefully be somewhat familiar.
+2. Take a look at the resources linked in the section below. Definitely read about Javascript modules and Typescript. The other links provide documentation for classes used in the code.
+3. Add a `Cube` class that inherits from `Drawable` and at the very least implement a constructor and its `create` function. Then, add a `Cube` instance to the scene to be rendered.
+4. Read the documentation for dat.GUI below. Update the existing GUI in `main.ts` with a parameter to alter the color passed to `u_Color` in the Lambert shader.
+5. Write a custom fragment shader that implements FBM, Worley Noise, or Perlin Noise based on 3D inputs (as opposed to the 2D inputs in the slides). This noise must be used to modify your fragment color. If your custom shader is particularly interesting, you'll earn some bonus points.
+6. Write a custom vertex shader that uses a trigonometric function (e.g. `sin`, `tan`) to non-uniformly modify your cube's vertex positions over time. This will necessitate instantiating an incrementing variable in your Typescript code that you pass to your shader every tick. Refer to the base code's methods of passing variables to shaders if you are unsure how to do so.
+7. Feel free to update any of the files when writing your code. The implementation of the `OpenGLRenderer` is currently very simple.
 
-Alter `main.ts` so that it renders the icosphere provided, rather than the cube you built in hw0. You will be writing a WebGL shader to displace its surface to look like a fireball. You may either rewrite the shader you wrote in hw0, or make a new `ShaderProgram` instance that uses new GLSL files.
+## Making a Live Demo
+When you push changes to the `master` branch of your repository on Github, a Github workflow will run automatically which builds your code and pushes the build to a new branch `gh-pages`. The configuration file which handles this is located at `.github/workflows/build-and-deploy.yml`. If you want to modify this, you can read more about workflows [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions).
 
-## Noise Generation
+Once your built code is pushed to `gh-pages`, Github can automatically publish a live site. Configure that by:
 
-Across your vertex and fragment shaders, you must implement a variety of functions of the form `h = f(x,y,z)` to displace and color your fireball's surface, where `h` is some floating-point displacement amount.
+  1. Open the Settings tab of your repository in Github.
 
-- Your vertex shader should apply a low-frequency, high-amplitude displacement of your sphere so as to make it less uniformly sphere-like. You might consider using a combination of sinusoidal functions for this purpose.
-- Your vertex shader should also apply a higher-frequency, lower-amplitude layer of fractal Brownian motion to apply a finer level of distortion on top of the high-amplitude displacement.
-- Your fragment shader should apply a gradient of colors to your fireball's surface, where the fragment color is correlated in some way to the vertex shader's displacement.
-- Both the vertex and fragment shaders should alter their output based on a uniform time variable (i.e. they should be animated). You might consider making a constant animation that causes the fireball's surface to roil, or you could make an animation loop in which the fireball repeatedly explodes.
-- Across both shaders, you should make use of at least four of the functions discussed in the Toolbox Functions slides.
+  2. Scroll down to the Pages tab of the Settings (in the table on the left) and choose which branch to make the source for the deployed project. This should be the `gh-pages` branch which is automatically created after the first successful build of the `master` branch.
 
+  3. Done! Now, any new commits on the `master` branch will be built and pushed to `gh-pages`. The project should be visible at http://username.github.io/repo-name.
+ 
 
-## Noise Application
+To check if everything is on the right track:
 
-View your noise in action by applying it as a displacement on the surface of your icosahedron, giving your icosahedron a bumpy, cloud-like appearance. Simply take the noise value as a height, and offset the vertices along the icosahedron's surface normals. You are, of course, free to alter the way your noise perturbs your icosahedron's surface as you see fit; we are simply recommending an easy way to visualize your noise. You could even apply a couple of different noise functions to perturb your surface to make it even less spherical.
+1. Make sure the `gh-pages` branch of your repo has a files called `index.html`, `bundle.js`, and `bundle.js.map`
 
-In order to animate the vertex displacement, use time as the third dimension or as some offset to the (x, y, z) input to the noise function. Pass the current time since start of program as a uniform to the shaders.
-
-For both visual impact and debugging help, also apply color to your geometry using the noise value at each point. There are several ways to do this. For example, you might use the noise value to create UV coordinates to read from a texture (say, a simple gradient image), or just compute the color by hand by lerping between values.
-
-## Interactivity
-
-Using dat.GUI, make at least THREE aspects of your demo interactive variables. For example, you could add a slider to adjust the strength or scale of the noise, change the number of noise octaves, etc. 
-
-Add a button that will restore your fireball to some nice-looking (courtesy of your art direction) defaults. :)
-
-## Extra Spice
-
-Choose one of the following options: 
-
-- Background (easy-hard depending on how fancy you get): Add an interesting background or a more complex scene to place your fireball in so it's not floating in a black void
-- Custom mesh (easy): Figure out how to import a custom mesh rather than using an icosahedron for a fancy-shaped cloud.
-- Mouse interactivity (medium): Find out how to get the current mouse position in your scene and use it to deform your cloud, such that users can deform the cloud with their cursor.
-- Music (hard): Figure out a way to use music to drive your noise animation in some way, such that your noise cloud appears to dance.
+2. In the settings tab of the repo, under Pages, make sure it says your site is published at some url.
 
 ## Submission
+1. Create a pull request to this repository with your completed code.
+2. Update README.md to contain a solid description of your project with a screenshot of some visuals, and a link to your live demo.
+3. Submit the link to your pull request on Canvas, and add a comment to your submission with a hyperlink to your live demo.
+4. Include a link to your live site.
 
-- Update README.md to contain a solid description of your project
-- Publish your project to gh-pages. `npm run deploy`. It should now be visible at http://username.github.io/repo-name
-- Create a [pull request](https://help.github.com/articles/creating-a-pull-request/) to this repository, and in the comment, include a link to your published project.
-- Submit the link to your pull request on Canvas.
+## Resources
+- Javascript modules https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
+- Typescript https://www.typescriptlang.org/docs/home.html
+- dat.gui https://workshop.chromeexperiments.com/examples/gui/
+- glMatrix http://glmatrix.net/docs/
+- WebGL
+  - Interfaces https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
+  - Types https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Types
+  - Constants https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
