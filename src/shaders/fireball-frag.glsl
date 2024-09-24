@@ -12,6 +12,7 @@
 precision highp float;
 
 uniform vec4 u_Color; // The color with which to render this instance of geometry.
+uniform vec4 u_Color2;
 uniform float u_Time;
 
 // These are the interpolated values out of the rasterizer, so you can't know
@@ -133,8 +134,8 @@ void main()
                                                             //lit by our point light are not completely black.
 
         // Compute final shaded color
-        vec3 color_inside = vec3(1.0, 1.0, 0.0);
-        vec3 color_outside = vec3(0.5, 0.0, 0.1);
+        vec3 color_inside = u_Color.xyz;
+        vec3 color_outside = u_Color2.xyz;
         vec3 color_center = vec3(1.0, 1.0, 0.5);
 
         float fire_layer1 = 1. - map(acos(dot(vec3(0.0, 1.0, 0.0), fs_Nor.xyz)), radians(20.0), radians(135.0), 0.0, 1.0);

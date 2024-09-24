@@ -13,7 +13,8 @@ import Cube from './geometry/Cube';
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
   tesselations: 5,
-  color: [73, 119, 153],
+  color_inside: [255, 255, 0],
+  color_outside: [128, 0, 26],
   'Load Scene': loadScene, // A function pointer, essentially
 };
 
@@ -45,7 +46,8 @@ function main() {
   const gui = new DAT.GUI();
   gui.add(controls, 'tesselations', 0, 8).step(1);
   gui.add(controls, 'Load Scene');
-  gui.addColor(controls, "color");
+  gui.addColor(controls, "color_inside");
+  gui.addColor(controls, "color_outside");
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -84,7 +86,7 @@ function main() {
       icosphere = new Icosphere(vec3.fromValues(0, 0, 0), 1, prevTesselations);
       icosphere.create();
     }
-    renderer.render(camera, lambert, controls.color, time, [
+    renderer.render(camera, lambert, controls.color_inside, controls.color_outside, time, [
       icosphere,
       //square,
       // cube

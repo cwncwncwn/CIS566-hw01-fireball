@@ -22,7 +22,7 @@ class OpenGLRenderer {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   }
 
-  render(camera: Camera, prog: ShaderProgram, color: Array<GLfloat>, time: GLfloat, drawables: Array<Drawable>) {
+  render(camera: Camera, prog: ShaderProgram, color_inside: Array<GLfloat>, color_outside: Array<GLfloat>, time: GLfloat, drawables: Array<Drawable>) {
     let model = mat4.create();
     let viewProj = mat4.create();
 
@@ -30,7 +30,8 @@ class OpenGLRenderer {
     mat4.multiply(viewProj, camera.projectionMatrix, camera.viewMatrix);
     prog.setModelMatrix(model);
     prog.setViewProjMatrix(viewProj);
-    prog.setGeometryColor(vec4.fromValues(color[0] / 256.0, color[1] / 256.0, color[2] / 256.0, 1));
+    prog.setGeometryColor(vec4.fromValues(color_inside[0] / 255.0, color_inside[1] / 255.0, color_inside[2] / 255.0, 1));
+    prog.setGeometryColor2(vec4.fromValues(color_outside[0] / 255.0, color_outside[1] / 255.0, color_outside[2] / 255.0, 1));
     prog.setTime(time);
     prog.setCamPos(camera.position);
 
