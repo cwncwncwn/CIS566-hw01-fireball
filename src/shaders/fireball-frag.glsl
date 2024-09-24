@@ -139,7 +139,6 @@ void main()
         vec3 color_center = vec3(1.0, 1.0, 0.5);
 
         float fire_layer1 = 1. - map(acos(dot(vec3(0.0, 1.0, 0.0), fs_Nor.xyz)), radians(20.0), radians(135.0), 0.0, 1.0);
-        vec3 color_layer1 = mix(color_inside, color_outside, getBias(fire_layer1, 0.7));
 
         float fire_layer2 = map(diffuseTerm, 0.6, 1.0, 0.0, 1.0) * max(0.8, perlinNoise3D(fs_Pos.xyz + u_Time * 0.008));
         vec3 color_layer2 = mix(color_outside, color_inside, fire_layer1 * fire_layer2);
@@ -154,4 +153,5 @@ void main()
 
 
         out_Col = vec4(diffuseColor.rgb * lightIntensity, diffuseColor.a);
+        // out_Col = vec4(color_layer2, 1.0);
 }
