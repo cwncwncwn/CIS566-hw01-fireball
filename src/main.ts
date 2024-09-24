@@ -17,7 +17,7 @@ const controls = {
   color_outside: [128, 0, 26],
   'Load Scene': loadScene, // A function pointer, essentially
 };
-
+ 
 let icosphere: Icosphere;
 let square: Square;
 let cube: Cube;
